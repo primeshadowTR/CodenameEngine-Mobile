@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FNF Chart → MIDI</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:#101010;
+    color:white;
+    font-family:Arial,sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.app{
+    width:min(94%,520px);
+    background:#1d1d1d;
+    border-radius:20px;
+    padding:24px;
+    box-shadow:0 15px 50px #000;
+}
+
+h1{
+    text-align:center;
+    margin:0 0 20px;
+}
+
+input{
+    display:none;
+}
+
+.select{
+    display:block;
+    background:#333;
+    padding:16px;
+    border-radius:12px;
+    text-align:center;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button,
+.download{
+    display:block;
+    width:100%;
+    padding:15px;
+    margin-top:12px;
+    border:0;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:bold;
+    text-align:center;
+    text-decoration:none;
+}
+
+button{
+    background:white;
+    color:#111;
+    cursor:pointer;
+}
+
+button:disabled{
+    opacity:.35;
+}
+
+.download{
+    background:#303030;
+    color:white;
+}
+
+#info{
+    margin-top:15px;
+    padding:14px;
+    background:#101010;
+    border-radius:12px;
+    white-space:pre-wrap;
+    font-size:14px;
+    line-height:1.5;
+}
+
+#downloads{
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<h1>🎵 FNF Chart → MIDI</h1>
+
+<label class="select">
+    📂 Chart JSON Seç
+    <input id="file" type="file" accept=".json">
+</label>
+
+<button id="convert" disabled>
+    Convert → MIDI
+</button>
+
+<div id="info">
+Dosya bekleniyor...
+</div>
+
+<div id="downloads">
+
+<a id="open"
+   class="download"
+   download="Open_Opponent.mid">
+   ⬇️ Open / Opponent MIDI
+</a>
+
+<a id="player"
+   class="download"
+   download="Player.mid">
+   ⬇️ Player MIDI
+</a>
+
+</div>
+
+</div>
+
+
+<script>
+
+const fileInput =
+    document.getElementById("file");
+
+const convertButton =
+    document.getElementById("convert");
+
+const info =
+    document.getElementById("info");
+
+const downloads =
+    document.getElementById("downloads");
+
+const openButton =
+    document.getElementById("open");
+
+const playerButton =
+    document.getElementById("player");
+
+let selectedFile = null;
+
+
+/* =========================================
+   DOSYA SEÇ
+========================================= */
+
+fileInput.addEventListener("change",()=>{
+
+    selectedFile =
+        fileInput.files[0];
+
+    if(!selectedFile){
+
+        convertButton.disabled=true;
+
+        info.textContent =
+            "Dosya seçilmedi.";
+
+        return;
+    }
+
+    convertButton.disabled=false;
+
+    info.textContent =
+        "📄 " +
+        selectedFile.name +
+        "\n\nHazır.";
+
+});
+
+
+/*
